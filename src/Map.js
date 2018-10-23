@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 class Map extends Component {
 
   componentDidMount() {
-    console.log("Map placeholder did mount");
+    //console.log("Map placeholder did mount");
   }
 
   render() {

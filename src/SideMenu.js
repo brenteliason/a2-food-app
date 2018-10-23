@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 class SideMenu extends Component {
 
   componentDidMount() {
-    console.log("Side menu did mount");
+    //console.log("Side menu did mount");
   }
 
   render() {

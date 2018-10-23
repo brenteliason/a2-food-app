@@ -13,7 +13,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    console.log("App component has mounted");
+    //console.log("App component has mounted");
     this.setState({ restaurants: [
       {title: "Ayse's Turkish Cafe", location: {lat: 42.299009, lng: -83.721571}},
       {title: "Bell's Diner", location: {lat: 42.273374, lng: -83.776446}},
