@@ -12,6 +12,27 @@ class App extends Component {
     }
   }
 
+  getGoogleMaps() {
+    if (!this.googleMapsPromise) {
+      this.googleMapsPromise = new Promise((resolve) => {
+        window.resolveGoogleMapsPromise = () => {
+          resolve(window.google);
+          delete window.resolveGoogleMapsPromise;
+        };
+        const script = document.createElement("script");
+        const API = 'AIzaSyCp94ulCrrIQSdInreuhlCEoiac6noQBwo';
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${API}&callback=resolveGoogleMapsPromise`;
+        script.async = true;
+        document.body.appendChild(script);
+      });
+    }
+    return this.googleMapsPromise;
+  }
+
+  componentWillMount() {
+    this.getGoogleMaps();
+  }
+
   componentDidMount() {
     //console.log("App component has mounted");
     this.setState({ restaurants: [
@@ -45,7 +66,21 @@ class App extends Component {
       {title: "Zingerman's Deli", location: {lat: 42.284682, lng: -83.745071}}
     ]
     })
-  }
+
+    let get_google = this.getGoogleMaps();
+
+    Promise.all([ get_google ])
+    .then(values => {
+      console.log(values);
+      let google = values[0];
+      this.google = google;
+      this.map = new google.maps.Map(document.getElementById('map'), {
+        center: { lat: 42.280826, lng: -83.743038 },
+        zoom: 13
+      });
+    })
+
+  }//END of componentdidmount
 
   render() {
     return (
