@@ -54,6 +54,10 @@ hr {
   overflow: auto;
 }
 
+ul {
+  list-style: none;
+}
+
 #pano {
   width: 200px;
   height: 200px;

@@ -22,6 +22,11 @@ class SideMenu extends Component {
          </div>
          <hr/>
          <div id="restaurant-list">
+          <ul>
+            {this.props.locations.map((restaurant, key) => (
+                <li key={key}>{restaurant.title}</li>
+            ))}
+          </ul>
          </div>
        </div>
     )
