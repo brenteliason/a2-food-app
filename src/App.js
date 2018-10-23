@@ -8,7 +8,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      restaurants: []
+      restaurants: [],
+      markers: []
     }
   }
 
@@ -71,16 +72,50 @@ class App extends Component {
 
     Promise.all([ get_google ])
     .then(values => {
-      console.log(values);
+      //console.log(values);
       let google = values[0];
       this.google = google;
       this.map = new google.maps.Map(document.getElementById('map'), {
         center: { lat: 42.280826, lng: -83.743038 },
-        zoom: 13
+        zoom: 14,
+        mapTypeControl: false
       });
-    })
 
-  }//END of componentdidmount
+
+    console.log("Now loading restaurant markers");
+
+    for (var i = 0; i < this.state.restaurants.length; i++) {
+      console.log("Adding marker for restaurant #: " + i);
+
+      // Get the title and location from the restaurant array.
+      var title = this.state.restaurants[i].title;
+      var position = this.state.restaurants[i].location;
+      // Create a marker per location, and put into markers array.
+      var marker = new google.maps.Marker({
+        position: position,
+        title: title,
+        animation: google.maps.Animation.DROP,
+        //icon: defaultIcon,
+        id: i
+      });
+      // Push the marker to our array of markers.
+      this.state.markers[i] = marker;
+    }
+
+    console.log("Printing markers before second for loop...");
+    console.log(this.state.markers);
+    //var bounds = new google.maps.LatLngBounds();
+    // Extend the boundaries of the map for each marker and display the marker
+    for (var j = 0; j < this.state.markers.length; j++) {
+      this.state.markers[j].setMap(this.map);
+      //bounds.extend(this.state.markers[i].position);
+    }
+    //this.map.fitBounds(bounds);
+
+  })//END OF PROMISE
+
+  } //END of componentdidmount
+
 
   render() {
     return (
