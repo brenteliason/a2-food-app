@@ -77,7 +77,7 @@ class App extends Component {
       this.google = google;
       this.map = new google.maps.Map(document.getElementById('map'), {
         center: { lat: 42.280826, lng: -83.743038 },
-        zoom: 14,
+        zoom: 13,
         mapTypeControl: false
       });
 
