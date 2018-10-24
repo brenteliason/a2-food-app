@@ -86,11 +86,11 @@ class App extends Component {
       this.setState(map: map);
 
 
-      console.log("Now loading restaurant markers");
+      //console.log("Now loading restaurant markers");
 
       //let markerHolder = [];
       for (var i = 0; i < this.state.restaurants.length; i++) {
-        console.log("Adding marker for restaurant #: " + i);
+        //console.log("Adding marker for restaurant #: " + i);
 
         // Get the title and location from the restaurant array.
         var title = this.state.restaurants[i].title;
@@ -108,8 +108,8 @@ class App extends Component {
       }
       //this.setState(markers: markers);
 
-      console.log("Printing markers before second for loop...");
-      console.log(this.state.markers);
+      //console.log("Printing markers before second for loop...");
+      //console.log(this.state.markers);
 
       var infowindow = new google.maps.InfoWindow();
 
