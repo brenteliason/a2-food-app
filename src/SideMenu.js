@@ -1,6 +1,12 @@
 import React, { Component } from 'react';
 
 class SideMenu extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      query: ""
+    }
+  }
 
   componentDidMount() {
     //console.log("Side menu did mount");
@@ -10,11 +16,6 @@ class SideMenu extends Component {
     return (
        <div className="options-box">
          <h1>Find A Restaurant in A2</h1>
-         <div>
-           <input id="show-restaurants" type="button" value="Show Restaurants"/>
-           <input id="hide-restaurants" type="button" value="Hide Restaurants"/>
-         </div>
-         <hr/>
          <div>
            <span className="text">Search for restaurants by name</span>
            <input id="places-search" type="text" placeholder="Ex: Zingerman's Deli"/>

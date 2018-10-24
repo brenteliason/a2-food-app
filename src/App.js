@@ -9,7 +9,9 @@ class App extends Component {
     super(props);
     this.state = {
       restaurants: [],
-      markers: []
+      markers: [],
+      map: null,
+      google: null
     }
   }
 
@@ -75,47 +77,118 @@ class App extends Component {
       //console.log(values);
       let google = values[0];
       this.google = google;
+      this.setState(google: google);
       this.map = new google.maps.Map(document.getElementById('map'), {
         center: { lat: 42.280826, lng: -83.743038 },
         zoom: 13,
         mapTypeControl: false
       });
+      this.setState(map: map);
 
 
-    console.log("Now loading restaurant markers");
+      console.log("Now loading restaurant markers");
 
-    for (var i = 0; i < this.state.restaurants.length; i++) {
-      console.log("Adding marker for restaurant #: " + i);
+      //let markerHolder = [];
+      for (var i = 0; i < this.state.restaurants.length; i++) {
+        console.log("Adding marker for restaurant #: " + i);
 
-      // Get the title and location from the restaurant array.
-      var title = this.state.restaurants[i].title;
-      var position = this.state.restaurants[i].location;
-      // Create a marker per location, and put into markers array.
-      var marker = new google.maps.Marker({
-        position: position,
-        title: title,
-        animation: google.maps.Animation.DROP,
-        //icon: defaultIcon,
-        id: i
-      });
-      // Push the marker to our array of markers.
-      this.state.markers[i] = marker;
-    }
+        // Get the title and location from the restaurant array.
+        var title = this.state.restaurants[i].title;
+        var position = this.state.restaurants[i].location;
+        // Create a marker per location, and put into markers array.
+        var marker = new google.maps.Marker({
+          position: position,
+          title: title,
+          animation: google.maps.Animation.DROP,
+          //icon: defaultIcon,
+          id: i
+        });
+        // Push the marker to our array of markers.
+        this.state.markers[i] = marker;
+      }
+      //this.setState(markers: markers);
 
-    console.log("Printing markers before second for loop...");
-    console.log(this.state.markers);
-    //var bounds = new google.maps.LatLngBounds();
-    // Extend the boundaries of the map for each marker and display the marker
-    for (var j = 0; j < this.state.markers.length; j++) {
-      this.state.markers[j].setMap(this.map);
-      //bounds.extend(this.state.markers[i].position);
-    }
-    //this.map.fitBounds(bounds);
+      console.log("Printing markers before second for loop...");
+      console.log(this.state.markers);
 
-  })//END OF PROMISE
+      var infowindow = new google.maps.InfoWindow();
+
+      //var bounds = new google.maps.LatLngBounds();
+      // Extend the boundaries of the map for each marker and display the marker
+      for (var j = 0; j < this.state.markers.length; j++) {
+        this.state.markers[j].setMap(this.map);
+        //bounds.extend(this.state.markers[i].position);
+
+        /*marker.addListener('click', function() {
+          // Check to make sure the infowindow is not already opened on this marker.
+          if (infowindow.marker != marker) {
+            // Clear the infowindow content to give the streetview time to load.
+            infowindow.setContent('');
+            infowindow.marker = marker;
+            // Make sure the marker property is cleared if the infowindow is closed.
+            infowindow.addListener('closeclick', function() {
+              infowindow.marker = null;
+            });
+            var streetViewService = new google.maps.StreetViewService();
+            var radius = 50;
+            // In case the status is OK, which means the pano was found, compute the
+            // position of the streetview image, then calculate the heading, then get a
+            // panorama from that and set the options
+            function getStreetView(data, status) {
+              if (status == google.maps.StreetViewStatus.OK) {
+                var nearStreetViewLocation = data.location.latLng;
+                var heading = google.maps.geometry.spherical.computeHeading(
+                  nearStreetViewLocation, marker.position);
+                  infowindow.setContent('<div>' + marker.title + '</div><div id="pano"></div>');
+                  var panoramaOptions = {
+                    position: nearStreetViewLocation,
+                    pov: {
+                      heading: heading,
+                      pitch: 30
+                    }
+                  };
+                var panorama = new google.maps.StreetViewPanorama(
+                  document.getElementById('pano'), panoramaOptions);
+              } else {
+                infowindow.setContent('<div>' + marker.title + '</div>' +
+                  '<div>No Street View Found</div>');
+              }
+            }
+            // Use streetview service to get the closest streetview image within
+            // 50 meters of the markers position
+            streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
+            // Open the infowindow on the correct marker.
+            infowindow.open(this.map, marker);
+          }//END OF IF STATEMENT AT TOP*/
+        }//END of For loop
+
+        //document.getElementById('show-restaurants').addEventListener('click', this.showRestaurants);
+
+        //document.getElementById('hide-restaurants').addEventListener('click', this.hideRestaurants);
+
+    })//END OF PROMISE
 
   } //END of componentdidmount
 
+  showRestaurants() {
+    console.log("Show Restaurants button clicked");
+    //let google = this.getGoogleMaps();
+    /*var bounds = new google.maps.LatLngBounds();
+    // Extend the boundaries of the map for each marker and display the marker
+    for (var i = 0; i < this.state.markers.length; i++) {
+      this.state.markers[i].setMap(this.state.map);
+      bounds.extend(this.state.markers[i].position);
+    }
+    this.state.map.fitBounds(bounds);*/
+  }
+
+  // This function will loop through the restaurants and hide them all.
+hideRestaurants() {
+  console.log("Hide restaurants button clicked");
+  /*for (var i = 0; i < this.state.markers.length; i++) {
+    this.state.markers[i].setMap(null);
+  }*/
+}
 
   render() {
     return (
