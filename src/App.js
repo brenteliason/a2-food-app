@@ -11,7 +11,8 @@ class App extends Component {
       restaurants: [],
       markers: [],
       map: null,
-      google: null
+      google: null,
+      query: ""
     }
   }
 
@@ -183,17 +184,32 @@ class App extends Component {
   }
 
   // This function will loop through the restaurants and hide them all.
-hideRestaurants() {
-  console.log("Hide restaurants button clicked");
-  /*for (var i = 0; i < this.state.markers.length; i++) {
-    this.state.markers[i].setMap(null);
-  }*/
-}
+  hideRestaurants() {
+    console.log("Hide restaurants button clicked");
+    /*for (var i = 0; i < this.state.markers.length; i++) {
+      this.state.markers[i].setMap(null);
+    }*/
+  }
+
+  updateQuery = (query) => {
+    console.log("Latest query: " + query);
+    this.setState({query : query}, this.searchRestaurants(this.state.query.toLowerCase()));
+  }
+
+  searchRestaurants(query) {
+    console.log("Submit search function called, need to search for restaurants in list");
+    console.log("Number of restaurants is: " + this.state.restaurants.length);
+    for (let i = 0; i < this.state.restaurants.length; i++) {
+      console.log("Check if restaurant " + i + " matches query " + query);
+      if (this.state.restaurants[i].title.toLowerCase().includes(query))
+        console.log("MATCH! " + query + " found in " + this.state.restaurants[i].title);
+    }
+  }
 
   render() {
     return (
       <div className="container">
-        <SideMenu locations={this.state.restaurants}/>
+        <SideMenu locations={this.state.restaurants} query={this.state.query} search={this.updateQuery} />
         <Map locations={this.state.restaurants}/>
       </div>
     );

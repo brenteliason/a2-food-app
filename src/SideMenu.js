@@ -37,8 +37,8 @@ class SideMenu extends Component {
        <div className="options-box">
          <h1>Find A Restaurant in A2</h1>
          <div>
-           <input id="restaurant-search" type="text" placeholder="Search for a restaurant" value={this.state.query}
-            onChange={(event) => this.updateQuery(event.target.value)}/>
+           <input id="restaurant-search" type="text" placeholder="Search for a restaurant" value={this.props.query}
+            onChange={(event) => this.props.search(event.target.value)}/>
            <input id="go-places" type="button" value="Go"/>
          </div>
          <hr/>
