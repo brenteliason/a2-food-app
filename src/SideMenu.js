@@ -32,25 +32,48 @@ class SideMenu extends Component {
 
   render() {
 
-
-    return (
-       <div className="options-box">
-         <h1>Find A Restaurant in A2</h1>
-         <div>
-           <input id="restaurant-search" type="text" placeholder="Search for a restaurant" value={this.props.query}
-            onChange={(event) => this.props.search(event.target.value)}/>
-           <input id="go-places" type="button" value="Go"/>
-         </div>
-         <hr/>
-         <div id="restaurant-list">
-          <ul>
-            {this.props.locations.map((restaurant, key) => (
-                <li key={key}>{restaurant.title}</li>
-            ))}
-          </ul>
-         </div>
-       </div>
-    )
+      if (this.props.query === "") {
+        console.log("No query");
+        return (
+           <div className="options-box">
+             <h1>Find A Restaurant in A2</h1>
+             <div>
+               <input id="restaurant-search" type="text" placeholder="Search for a restaurant" value={this.props.query}
+                onChange={(event) => this.props.search(event.target.value)}/>
+               <input id="go-places" type="button" value="Go"/>
+             </div>
+             <hr/>
+             <div id="restaurant-list">
+              <ul>
+                {this.props.locations.map((restaurant, key) => (
+                    <li key={key}>{restaurant.title}</li>
+                ))}
+              </ul>
+             </div>
+           </div>
+        )
+      }
+      else {
+        console.log("active query");
+        return (
+           <div className="options-box">
+             <h1>Find A Restaurant in A2</h1>
+             <div>
+               <input id="restaurant-search" type="text" placeholder="Search for a restaurant" value={this.props.query}
+                onChange={(event) => this.props.search(event.target.value)}/>
+               <input id="go-places" type="button" value="Go"/>
+             </div>
+             <hr/>
+             <div id="restaurant-list">
+              <ul>
+                {this.props.matches.map((match, key) => (
+                    <li>{match.title}</li>
+                ))}
+              </ul>
+             </div>
+           </div>
+        )
+      }
   }
 }
 

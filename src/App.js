@@ -9,6 +9,7 @@ class App extends Component {
     super(props);
     this.state = {
       restaurants: [],
+      matches: [],
       markers: [],
       map: null,
       google: null,
@@ -70,6 +71,10 @@ class App extends Component {
       {title: "Zingerman's Deli", location: {lat: 42.284682, lng: -83.745071}}
     ]
     })
+    if (this.state.query === "") {
+      this.setState({matches: this.state.restaurants});
+      console.log("Inside App componentDidMount, matches should equal restaurants: " + this.state.restaurants.length + " =? " + this.state.matches.length);
+    }
 
     let get_google = this.getGoogleMaps();
 
@@ -193,23 +198,49 @@ class App extends Component {
 
   updateQuery = (query) => {
     console.log("Latest query: " + query);
-    this.setState({query : query}, this.searchRestaurants(this.state.query.toLowerCase()));
+    this.setState({query : query});
+    this.searchRestaurants(query.toLowerCase());
   }
 
   searchRestaurants(query) {
-    console.log("Submit search function called, need to search for restaurants in list");
-    console.log("Number of restaurants is: " + this.state.restaurants.length);
-    for (let i = 0; i < this.state.restaurants.length; i++) {
-      console.log("Check if restaurant " + i + " matches query " + query);
-      if (this.state.restaurants[i].title.toLowerCase().includes(query))
-        console.log("MATCH! " + query + " found in " + this.state.restaurants[i].title);
+    //console.log("Submit search function called, need to search for restaurants in list");
+    //console.log("Number of restaurants is: " + this.state.restaurants.length);
+    this.setState({matches: []});
+    console.log("After resetting matches, length is: " + this.state.matches.length);
+    if (query !== "") {
+      let matchCount = 0;
+      //let queryMatches = [];
+      for (let i = 0; i < this.state.restaurants.length; i++) {
+        //console.log("Check if restaurant " + i + " matches query " + query);
+        if (this.state.restaurants[i].title.toLowerCase().includes(query)) {
+          console.log("MATCH! " + query + " found in " + this.state.restaurants[i].title);
+          let matchTitle = this.state.restaurants[i].title;
+          let matchPosition = this.state.restaurants[i].location;
+          this.setState({matches: [...this.state.matches, this.state.restaurants[i]]});
+          //queryMatches.push({matchTitle, matchPosition});
+          matchCount++;
+        }
+      }
+      console.log("Matchcount equals " + matchCount);
+      //console.log("queryMatches length equals " + queryMatches.length);
+      //this.setState({matches: queryMatches});
+      console.log("State.matches length equals " + this.state.matches.length);
+      //console.log(this.state.matches);
+    }
+    else {
+      console.log("No query at this time - all restaurants match");
+      console.log("\tLength of matches should be 0, it is: " + this.state.matches.length);
+      //this.setState({matches: this.state.restaurants});
+      //console.log("RESTAURANTS []" + this.state.restaurants);
+      console.log("MATCHES []" + this.state.matches);
     }
   }
 
   render() {
+    console.log("Calling App render method with " + this.state.restaurants.length + " many restaurants and " + this.state.matches.length + " this many matches");
     return (
       <div className="container">
-        <SideMenu locations={this.state.restaurants} query={this.state.query} search={this.updateQuery} />
+        <SideMenu locations={this.state.restaurants} matches={this.state.matches} query={this.state.query} search={this.updateQuery} />
         <Map locations={this.state.restaurants}/>
       </div>
     );
