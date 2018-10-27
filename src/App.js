@@ -204,12 +204,12 @@ class App extends Component {
   }
 
   filterRestaurants(query) {
-    let f = query ? this.state.restaurants.filter(r => r.title.toLowerCase().includes(query)) : this.state.restaurants;
-    /*(this..forEach(m => {
-      m.name.toLowerCase().includes(query) ?
+    let f = query ? this.state.restaurants.filter(r => r.title.toLowerCase().includes(query.toLowerCase())) : this.state.restaurants;
+    this.state.markers.forEach(m => {
+      m.title.toLowerCase().includes(query.toLowerCase()) ?
       m.setVisible(true) :
       m.setVisible(false);
-    });*/
+    });
     this.setState({ filtered: f, query: query });
   }
 
