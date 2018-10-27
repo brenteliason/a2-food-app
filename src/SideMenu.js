@@ -7,7 +7,7 @@ class SideMenu extends Component {
       restaurants: this.props.locations,
       query: ""
     }
-    console.log("Constructor completed, this many restaurants should be in array " + this.props.locations.length);
+    //console.log("Constructor completed, this many restaurants should be in array " + this.props.locations.length);
   }
 
   componentDidMount() {
@@ -18,28 +18,28 @@ class SideMenu extends Component {
 
   //this method updates the query held in state with the latest contents of the search bar and then calls submitSearch
   updateQuery = (query) => {
-    console.log("Latest query: " + query);
+    //console.log("Latest query: " + query);
     this.setState({query : query}, this.submitSearch);
   }
 
   submitSearch() {
-    console.log("Submit search function called, need to search for restaurants in list");
-    console.log("Number of restaurants is: " + this.state.restaurants.length);
+    //console.log("Submit search function called, need to search for restaurants in list");
+    //console.log("Number of restaurants is: " + this.state.restaurants.length);
     for (let i = 0; i < this.state.restaurants.length; i++) {
-      console.log("Check if restaurant " + i + " matches query " + this.state.query);
+      //console.log("Check if restaurant " + i + " matches query " + this.state.query);
     }
   }
 
   render() {
 
       if (this.props.query === "") {
-        console.log("No query");
+        //console.log("No query");
         return (
            <div className="options-box">
              <h1>Find A Restaurant in A2</h1>
              <div>
                <input id="restaurant-search" type="text" placeholder="Search for a restaurant" value={this.props.query}
-                onChange={(event) => this.props.search(event.target.value)}/>
+                onChange={(event) => this.props.filterRestaurants(event.target.value)}/>
                <input id="go-places" type="button" value="Go"/>
              </div>
              <hr/>
@@ -54,21 +54,23 @@ class SideMenu extends Component {
         )
       }
       else {
-        console.log("active query");
+        //console.log("active query");
         return (
            <div className="options-box">
              <h1>Find A Restaurant in A2</h1>
              <div>
                <input id="restaurant-search" type="text" placeholder="Search for a restaurant" value={this.props.query}
-                onChange={(event) => this.props.search(event.target.value)}/>
+                onChange={(event) => this.props.filterRestaurants(event.target.value)}/>
                <input id="go-places" type="button" value="Go"/>
              </div>
              <hr/>
              <div id="restaurant-list">
               <ul>
-                {this.props.matches.map((match, key) => (
-                    <li>{match.title}</li>
-                ))}
+                {
+                  this.props.filtered && this.props.filtered.map((restaurant, key) => (
+                    <li key={key}>{restaurant.title}</li>
+                  ))
+                }
               </ul>
              </div>
            </div>
