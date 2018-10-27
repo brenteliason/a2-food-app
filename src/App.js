@@ -113,6 +113,7 @@ class App extends Component {
         var marker = new google.maps.Marker({
           position: { lat: restaurant.location.lat, lng: restaurant.location.lng },
           id: restaurant.id,
+          restaurant: restaurant,
           name: restaurant.name,
           animation: google.maps.Animation.DROP,
           //icon: defaultIcon,
@@ -125,17 +126,17 @@ class App extends Component {
         marker.addListener('click', () => {
           if (marker.getAnimation() !== null) { marker.setAnimation(null); }
 				  else { marker.setAnimation(google.maps.Animation.BOUNCE); }
-				  //setTimeout(() => { marker.setAnimation(null) }, 1500);
+				  setTimeout(() => { marker.setAnimation(null) }, 1500);
 			  });
         google.maps.event.addListener(marker, 'click', () => {
   			   this.infowindow.setContent(infoBox);
-				   this.map.setZoom(13);
-				   this.map.setCenter(marker.position);
+				   //this.map.setZoom(15);
+				   //this.map.setCenter(marker.position);
 				   this.infowindow.open(this.map, marker);
-				   this.map.panBy(0, -125);
+				   //this.map.panBy(0, -125);
 			  });
-        marker.setMap(this.map);
         markers.push(marker);
+        marker.setMap(this.map);
         infoBoxes.push({ id: restaurant.id, name: restaurant.name, contents: infoBox });
 
         // Push the marker to our array of markers.
@@ -255,8 +256,8 @@ class App extends Component {
   }
 
   clickListItem(restaurant) {
-      console.log("Clicked on restaurant:");
-      console.log("Restaurant id equals: " + restaurant.id);
+      //console.log("Clicked on restaurant:");
+      //console.log("Restaurant id equals: " + restaurant.id);
 
       //console.log("State restaurants are: ");
       //console.log(this.state.restaurants[0].id);
