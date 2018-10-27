@@ -11,7 +11,6 @@ class App extends Component {
     this.state = {
       restaurants: [],
       filtered: [],
-      markers: [],
       map: null,
       google: null,
       query: ""
@@ -90,12 +89,13 @@ class App extends Component {
       this.setState(google: google);
       this.map = new google.maps.Map(document.getElementById('map'), {
         center: { lat: 42.280826, lng: -83.743038 },
-        zoom: 10,
+        zoom: 13,
         mapTypeControl: false
       });
       this.setState(map: map);
 
       let restaurants = values[1];
+      let markers = [];
       let infoBoxes = [];
       //console.log("Now loading restaurant markers");
 
@@ -104,21 +104,20 @@ class App extends Component {
         console.log("Restaurant from FourSquareAPI: " + restaurants[i]);
         var restaurant = restaurants[i];
         // Get the title and location from the restaurant array.
-        var name = restaurants[i].name;
-        var position = { lat: restaurants[i].location.lat, lng: restaurants[i].location.lng };
+        //var name = restaurant.name;
+        //var position = { lat: restaurant.location.lat, lng: restaurant.location.lng };
         // Create a marker per location, and put into markers array.
         var marker = new google.maps.Marker({
-          position: position,
-          name: name,
+          position: { lat: restaurant.location.lat, lng: restaurant.location.lng },
+          id: restaurant.id,
+          name: restaurant.name,
           animation: google.maps.Animation.DROP,
           //icon: defaultIcon,
-          id: restaurants[i].id
         });
 
         let infoBox = '<div class="info_box">' +
         '<h4>' + restaurant.name + '</h4>' +
         '<p>' + FSAPI.aft(restaurant.location.formattedAddress) + '</p>' +
-        '<p>' + restaurant.hereNow.summary + '</p>' +
         '</div>';
         marker.addListener('click', () => {
           if (marker.getAnimation() !== null) { marker.setAnimation(null); }
@@ -132,11 +131,12 @@ class App extends Component {
 				   this.infowindow.open(this.map, marker);
 				   this.map.panBy(0, -125);
 			  });
-        //markers.push(marker);
+        marker.setMap(this.map);
+        markers.push(marker);
         infoBoxes.push({ id: restaurant.id, name: restaurant.name, contents: infoBox });
 
         // Push the marker to our array of markers.
-        this.state.markers[i] = marker;
+        //this.state.markers[i] = marker;
 
         /*marker.addListener('click', function() {
           populateInfoWindow(this, infowindow);
@@ -146,13 +146,18 @@ class App extends Component {
 
       }//END OF FOR LOOP for adding markers and infoboxes for each restaurant
 
+      this.restaurants = FSAPI.sort_by(restaurants, "name", "asc");
+      this.setState({restaurants: this.restaurants});
+      this.markers = FSAPI.sort_by(markers, "name", "asc");
+      this.infoBoxes = FSAPI.sort_by(infoBoxes, "name", "asc");
+
       //console.log("Printing markers before second for loop...");
       //console.log(this.state.markers);
 
       //var bounds = new google.maps.LatLngBounds();
       // Extend the boundaries of the map for each marker and display the marker
-      for (var j = 0; j < this.state.markers.length; j++) {
-        this.state.markers[j].setMap(this.map);
+      /*for (var j = 0; j < this.state.markers.length; j++) {
+        //this.state.markers[j].setMap(this.map);
         //bounds.extend(this.state.markers[i].position);
 
         /*marker.addListener('click', function() {
@@ -196,7 +201,7 @@ class App extends Component {
             // Open the infowindow on the correct marker.
             infowindow.open(this.map, marker);
           }//END OF IF STATEMENT AT TOP*/
-        }//END of For loop
+        //}*///END of For loop
 
         //document.getElementById('show-restaurants').addEventListener('click', this.showRestaurants);
 
@@ -234,7 +239,7 @@ class App extends Component {
 
   filterRestaurants(query) {
     let f = query ? this.state.restaurants.filter(r => r.title.toLowerCase().includes(query.toLowerCase())) : this.state.restaurants;
-    this.state.markers.forEach(m => {
+    this.markers.forEach(m => {
       m.title.toLowerCase().includes(query.toLowerCase()) ?
       m.setVisible(true) :
       m.setVisible(false);
@@ -302,7 +307,7 @@ export default App;
 // This function populates the infowindow when the marker is clicked. We'll only allow
 // one infowindow which will open at the marker that is clicked, and populate based
 // on that markers position.
-function populateInfoWindow(marker, infowindow) {
+/*function populateInfoWindow(marker, infowindow) {
   //console.log("Need to populate infowindow for marker: " + marker.title);
   // Check to make sure the infowindow is not already opened on this marker.
   if (infowindow.marker != marker) {
@@ -344,4 +349,4 @@ function populateInfoWindow(marker, infowindow) {
     // Open the infowindow on the correct marker.
     infowindow.open(map, marker);
   }
-} //END OF populate info window method
+}*/ //END OF populate info window method

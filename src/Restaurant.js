@@ -8,7 +8,7 @@ class Restaurant extends Component {
 
   render() {
     return (
-       <li tabIndex="0" key={this.props.specialKey} onClick={this.props.onClick}>{this.props.title}</li>
+       <li tabIndex="0" key={this.props.specialKey} onClick={this.props.onClick}>{this.props.name}</li>
     )
   }
 }

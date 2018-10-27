@@ -37,7 +37,7 @@ class SideMenu extends Component {
         //console.log("No query");
         return (
            <div className="options-box">
-             <h1>Find A Restaurant in A2</h1>
+             <h1>Find Food in A2</h1>
              <div>
                <input id="restaurant-search" type="text" placeholder="Search for a restaurant" value={this.props.query}
                 onChange={(event) => this.props.filterRestaurants(event.target.value)}/>
@@ -47,7 +47,7 @@ class SideMenu extends Component {
              <div id="restaurant-list">
               <ul>
                 {this.props.locations.map((restaurant, key) => (
-                    <li key={key}>{restaurant.title}</li>
+                    <li key={key}>{restaurant.name}</li>
                 ))}
               </ul>
              </div>
@@ -69,7 +69,7 @@ class SideMenu extends Component {
               <ul>
                 {
                   this.props.filtered && this.props.filtered.map((restaurant, key) => (
-                    <Restaurant title={restaurant.title} specialKey={key} onClick={this.props.clickItem} /> 
+                    <Restaurant name={restaurant.name} specialKey={key} onClick={this.props.clickItem} />
                   ))
                 }
               </ul>
