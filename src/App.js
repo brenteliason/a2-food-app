@@ -98,6 +98,7 @@ class App extends Component {
       this.setState(map: map);
 
       let restaurants = values[1];
+
       let markers = [];
       let infoBoxes = [];
       //console.log("Now loading restaurant markers");
@@ -124,6 +125,10 @@ class App extends Component {
         '<p>' + FSAPI.aft(restaurant.location.formattedAddress) + '</p>' +
         '</div>';
         marker.addListener('click', () => {
+          console.log("Is this where the bug is?");
+          console.log("Is this the marker that was clicked?")
+          //console.log(marker);
+          //marker.setAnimation(google.maps.Animation.BOUNCE);
           if (marker.getAnimation() !== null) { marker.setAnimation(null); }
 				  else { marker.setAnimation(google.maps.Animation.BOUNCE); }
 				  setTimeout(() => { marker.setAnimation(null) }, 1500);
@@ -135,8 +140,9 @@ class App extends Component {
 				   this.infowindow.open(this.map, marker);
 				   //this.map.panBy(0, -125);
 			  });
-        markers.push(marker);
+
         marker.setMap(this.map);
+        markers.push(marker);
         infoBoxes.push({ id: restaurant.id, name: restaurant.name, contents: infoBox });
 
         // Push the marker to our array of markers.
@@ -154,10 +160,34 @@ class App extends Component {
       this.setState({restaurants: this.restaurants});
       this.markers = FSAPI.sort_by(markers, "name", "asc");
       this.setState({markers: this.markers});
-      console.log("state markers length equals: " + this.state.markers.length);
-      console.log(this.state.markers);
+      //console.log("state markers length equals: " + this.state.markers.length);
+      //console.log(this.state.markers);
       this.infoBoxes = FSAPI.sort_by(infoBoxes, "name", "asc");
       this.setState({infoBoxes: this.infoBoxes});
+
+      /*for (let j = 0; j < restaurants.length; j++) {
+        markers[j].addListener('click', () => {
+          console.log("Is this where the bug is?");
+          console.log("Is this the marker that was clicked?")
+          console.log(markers[j]);
+          //marker.setAnimation(google.maps.Animation.BOUNCE);
+          if (markers[j].getAnimation() !== null) { markers[j].setAnimation(null); }
+          else { markers[j].setAnimation(google.maps.Animation.BOUNCE); }
+          setTimeout(() => { markers[j].setAnimation(null) }, 1500);
+        });
+        google.maps.event.addListener(markers[j], 'click', () => {
+           this.infowindow.setContent(infoBoxes[j]);
+           //this.map.setZoom(15);
+           //this.map.setCenter(marker.position);
+           this.infowindow.open(this.map, markers[j]);
+           //this.map.panBy(0, -125);
+        });
+      }*/
+
+
+
+
+
 
       //console.log("Printing markers before second for loop...");
       //console.log(this.state.markers);
