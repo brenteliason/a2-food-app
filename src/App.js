@@ -141,31 +141,21 @@ class App extends Component {
 				   //this.map.panBy(0, -125);
 			  });
 
-        marker.setMap(this.map);
         markers.push(marker);
+        marker.setMap(this.map);
+
         infoBoxes.push({ id: restaurant.id, name: restaurant.name, contents: infoBox });
-
-        // Push the marker to our array of markers.
-        //this.state.markers[i] = marker;
-
-        /*marker.addListener('click', function() {
-          populateInfoWindow(this, infowindow);
-        });*/
-
 
 
       }//END OF FOR LOOP for adding markers and infoboxes for each restaurant
 
-      this.restaurants = FSAPI.sort_by(restaurants, "name", "asc");
-      this.setState({restaurants: this.restaurants});
-      this.markers = FSAPI.sort_by(markers, "name", "asc");
-      this.setState({markers: this.markers});
-      //console.log("state markers length equals: " + this.state.markers.length);
-      //console.log(this.state.markers);
-      this.infoBoxes = FSAPI.sort_by(infoBoxes, "name", "asc");
-      this.setState({infoBoxes: this.infoBoxes});
 
       /*for (let j = 0; j < restaurants.length; j++) {
+        let infoBox = '<div class="info_box">' +
+        '<h4>' + restaurant.name + '</h4>' +
+        '<p>' + FSAPI.aft(restaurant.location.formattedAddress) + '</p>' +
+        '</div>';
+
         markers[j].addListener('click', () => {
           console.log("Is this where the bug is?");
           console.log("Is this the marker that was clicked?")
@@ -182,9 +172,16 @@ class App extends Component {
            this.infowindow.open(this.map, markers[j]);
            //this.map.panBy(0, -125);
         });
+
+        infoBoxes.push({ id: restaurant.id, name: restaurant.name, contents: infoBox });
       }*/
 
-
+      this.restaurants = FSAPI.sort_by(restaurants, "name", "asc");
+      this.setState({restaurants: this.restaurants});
+      this.markers = FSAPI.sort_by(markers, "name", "asc");
+      this.setState({markers: this.markers});
+      this.infoBoxes = FSAPI.sort_by(infoBoxes, "name", "asc");
+      this.setState({infoBoxes: this.infoBoxes});
 
 
 
