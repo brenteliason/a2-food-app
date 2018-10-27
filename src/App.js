@@ -11,11 +11,14 @@ class App extends Component {
     this.state = {
       restaurants: [],
       filtered: [],
+      markers: [],
+      infoBoxes: [],
       map: null,
       google: null,
       query: ""
     }
     this.filterRestaurants = this.filterRestaurants.bind(this);
+    this.clickListItem = this.clickListItem.bind(this);
   }
 
   getGoogleMaps() {
@@ -100,8 +103,8 @@ class App extends Component {
       //console.log("Now loading restaurant markers");
 
       for (var i = 0; i < restaurants.length; i++) {//ADD MARKER AND INFOWINDOW FOR EACH RESTAURANT
-        console.log("Adding marker for restaurant #: " + i);
-        console.log("Restaurant from FourSquareAPI: " + restaurants[i]);
+        //console.log("Adding marker for restaurant #: " + i);
+        //console.log("Restaurant from FourSquareAPI with id#: " + restaurants[i].id);
         var restaurant = restaurants[i];
         // Get the title and location from the restaurant array.
         //var name = restaurant.name;
@@ -149,7 +152,11 @@ class App extends Component {
       this.restaurants = FSAPI.sort_by(restaurants, "name", "asc");
       this.setState({restaurants: this.restaurants});
       this.markers = FSAPI.sort_by(markers, "name", "asc");
+      this.setState({markers: this.markers});
+      console.log("state markers length equals: " + this.state.markers.length);
+      console.log(this.state.markers);
       this.infoBoxes = FSAPI.sort_by(infoBoxes, "name", "asc");
+      this.setState({infoBoxes: this.infoBoxes});
 
       //console.log("Printing markers before second for loop...");
       //console.log(this.state.markers);
@@ -248,7 +255,29 @@ class App extends Component {
   }
 
   clickListItem(restaurant) {
-      console.log("Clicked on restaurant");
+      console.log("Clicked on restaurant:");
+      console.log("Restaurant id equals: " + restaurant.id);
+
+      //console.log("State restaurants are: ");
+      //console.log(this.state.restaurants[0].id);
+      //console.log("state markers length equals: " + this.state.markers.length);
+      //console.log(this.state.markers);
+
+      //console.log("First marker id equals: " + this.state.markers[0].id);
+      let marker = this.state.markers.filter(m => m.id === restaurant.id)[0];
+      let info_obj = this.infoBoxes.filter(i => i.id === restaurant.id)[0];
+      let infoBox = info_obj && info_obj.contents || "nothing...";
+      if(marker && infoBox) {
+        if (marker.getAnimation() !== null) { marker.setAnimation(null); }
+        else { marker.setAnimation(this.google.maps.Animation.BOUNCE); }
+        setTimeout(() => { marker.setAnimation(null) }, 1500);
+
+        this.infowindow.setContent(infoBox);
+        this.map.setZoom(13);
+        this.map.setCenter(marker.position);
+        this.infowindow.open(this.map, marker);
+        this.map.panBy(0, -125);
+      }
   }
 
   searchRestaurants(query) {
@@ -295,7 +324,7 @@ class App extends Component {
           query={this.state.query}
           filtered={this.state.filtered}
           filterRestaurants={this.filterRestaurants}
-          clickItem={this.clickListItem} />
+          clickListItem={this.clickListItem} />
         <Map locations={this.state.restaurants}/>
       </div>
     );

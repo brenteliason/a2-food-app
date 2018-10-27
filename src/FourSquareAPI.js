@@ -141,7 +141,7 @@ export function loadPlaces() {
         return resolve(venues) ;
       }
       console.log('fetching restaurants...');
-      var apiURL = 'https://api.foursquare.com/v2/venues/search?client_id=SGCLM1SZUBLUEKM42ZX4FI45UL3QKIVBQRYBXRJDIYCI0XZM&client_secret=XLWNC1AN4EML4JVZOCORFQVWW3BIC1WEFKEEGQLD03DTUHUS&v=20130815%20&limit=10&ll=42.280826,-83.743038&query=food';
+      var apiURL = 'https://api.foursquare.com/v2/venues/search?client_id=SGCLM1SZUBLUEKM42ZX4FI45UL3QKIVBQRYBXRJDIYCI0XZM&client_secret=XLWNC1AN4EML4JVZOCORFQVWW3BIC1WEFKEEGQLD03DTUHUS&v=20130815%20&limit=20&ll=42.280826,-83.743038&query=food';
       fetch(apiURL)
       .then(resp => resp.json())
       .then(json => {

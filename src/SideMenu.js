@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Restaurant from './Restaurant';
+import './styles.css';
 
 class SideMenu extends Component {
   constructor(props) {
@@ -46,9 +47,11 @@ class SideMenu extends Component {
              <hr/>
              <div id="restaurant-list">
               <ul>
-                {this.props.locations.map((restaurant, key) => (
-                    <li key={key}>{restaurant.name}</li>
-                ))}
+                {
+                  this.props.locations && this.props.locations.map((restaurant, key) => (
+                    <Restaurant restaurant={restaurant} key={key} clickListItem={this.props.clickListItem} />
+                  ))
+                }
               </ul>
              </div>
            </div>
@@ -67,11 +70,11 @@ class SideMenu extends Component {
              <hr/>
              <div id="restaurant-list">
               <ul>
-                {
-                  this.props.filtered && this.props.filtered.map((restaurant, key) => (
-                    <Restaurant name={restaurant.name} specialKey={key} onClick={this.props.clickItem} />
-                  ))
-                }
+               {
+                 this.props.filtered && this.props.filtered.map((restaurant, key) => (
+                    <li tabIndex="0" key={this.props.key} id={this.props.restaurant.id} onClick={() => { this.props.clickListItem(this.props.restaurant) }}>{this.props.restaurant.name}</li>
+                 ))
+               }
               </ul>
              </div>
            </div>

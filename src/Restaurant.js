@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import './styles.css';
 
 class Restaurant extends Component {
 
@@ -8,7 +9,7 @@ class Restaurant extends Component {
 
   render() {
     return (
-       <li tabIndex="0" key={this.props.specialKey} onClick={this.props.onClick}>{this.props.name}</li>
+       <li tabIndex="0" key={this.props.key} id={this.props.restaurant.id} onClick={() => { this.props.clickListItem(this.props.restaurant) }}>{this.props.restaurant.name}</li>
     )
   }
 }
