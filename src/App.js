@@ -3,6 +3,7 @@ import './App.css';
 import SideMenu from './SideMenu';
 import Map from './Map';
 import './styles.css';
+import * as FSAPI from './FourSquareAPI';
 
 class App extends Component {
   constructor(props) {
@@ -217,6 +218,10 @@ class App extends Component {
     this.setState({ filtered: f, query: query });
   }
 
+  clickListItem(restaurant) {
+      console.log("Clicked on restaurant");
+  }
+
   searchRestaurants(query) {
     //console.log("Submit search function called, need to search for restaurants in list");
     //console.log("Number of restaurants is: " + this.state.restaurants.length);
@@ -260,7 +265,8 @@ class App extends Component {
           matches={this.state.matches}
           query={this.state.query}
           filtered={this.state.filtered}
-          filterRestaurants={this.filterRestaurants} />
+          filterRestaurants={this.filterRestaurants}
+          clickItem={this.clickListItem} />
         <Map locations={this.state.restaurants}/>
       </div>
     );
@@ -273,7 +279,7 @@ export default App;
 // one infowindow which will open at the marker that is clicked, and populate based
 // on that markers position.
 function populateInfoWindow(marker, infowindow) {
-  console.log("Need to populate infowindow for marker: " + marker.title);
+  //console.log("Need to populate infowindow for marker: " + marker.title);
   // Check to make sure the infowindow is not already opened on this marker.
   if (infowindow.marker != marker) {
     // Clear the infowindow content to give the streetview time to load.

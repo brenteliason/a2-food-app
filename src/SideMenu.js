@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Restaurant from './Restaurant';
 
 class SideMenu extends Component {
   constructor(props) {
@@ -68,7 +69,7 @@ class SideMenu extends Component {
               <ul>
                 {
                   this.props.filtered && this.props.filtered.map((restaurant, key) => (
-                    <li key={key}>{restaurant.title}</li>
+                    <Restaurant title={restaurant.title} specialKey={key} onClick={this.props.clickItem} /> 
                   ))
                 }
               </ul>
