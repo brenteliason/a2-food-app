@@ -1,3 +1,5 @@
+//Adapted from Udacity's Ryan Waite tutorial on project 7
+
 import idb from 'idb';
 
 export const dbPromise = idb.open('restaurants-app-db', 1, upgradeDB => {
@@ -56,13 +58,13 @@ export function storeVenues(venues) {
     console.log(venues);
     return Promise.reject('"venues" array length must be greater than 1');
   }
-  for(let v of venues) {
-    if(v.constructor !== Object) {
-      console.log(v);
+  for(let r of venues) {
+    if(r.constructor !== Object) {
+      console.log(r);
       return Promise.reject('each item in "venues" must be an object literal');
     }
-    if(!v.id) {
-      console.log(v);
+    if(!r.id) {
+      console.log(r);
       return Promise.reject('each item in "venues" must have "id" property');
     }
   }
@@ -123,7 +125,7 @@ export function getGoogleMaps() {
       delete window.resolveGoogleMapsPromise;
     };
     const script = document.createElement("script");
-    const API = 'AIzaSyB6N63ZIGH4b8Hgm9KhodA87Guuiem3C8Y';
+    const API = 'AIzaSyCp94ulCrrIQSdInreuhlCEoiac6noQBwo';
     script.src = `https://maps.googleapis.com/maps/api/js?key=${API}&callback=resolveGoogleMapsPromise`;
     script.async = true;
     document.body.appendChild(script);
@@ -138,18 +140,18 @@ export function loadPlaces() {
         console.log('returning venues from idb');
         return resolve(venues) ;
       }
-      console.log('fetching venues...');
-      let city = 'Silver Spring, MD';
-      let query = 'Shopping';
-      var apiURL = 'https://api.foursquare.com/v2/venues/search?client_id=N1IAMKZUIK1AUHKRFGFBKPQ2YKDSBAKS4NTER5SYZN5CROR1&client_secret=4MKLXVLU2FGZQVRMAEDC15P0TFJGSCY3ZUYUZ0KHQQQLQ5R3&v=20130815%20&limit=50&near=' + city + '&query=' + query + '';
+      console.log('fetching restaurants...');
+      let city = 'Ann Arbor, MI';
+      let query = 'restaurants';
+      var apiURL = 'https://api.foursquare.com/v2/venues/search?client_id=SGCLM1SZUBLUEKM42ZX4FI45UL3QKIVBQRYBXRJDIYCI0XZM&client_secret=XLWNC1AN4EML4JVZOCORFQVWW3BIC1WEFKEEGQLD03DTUHUS&v=20130815%20&limit=20&near=' + city + '&query=' + query + '';
       fetch(apiURL)
       .then(resp => resp.json())
       .then(json => {
         let { venues } = json.response;
-        console.log('storing venues...');
+        console.log('storing restaurants...');
         storeVenues(venues)
         .then(res => {
-          console.log('stored venues');
+          console.log('stored restaurants');
           return resolve(venues);
         })
       })

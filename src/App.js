@@ -42,7 +42,7 @@ class App extends Component {
 
   componentDidMount() {
     //console.log("App component has mounted");
-    this.setState({ restaurants: [
+    /*this.setState({ restaurants: [
       {title: "Ayse's Turkish Cafe", location: {lat: 42.299009, lng: -83.721571}},
       {title: "Bell's Diner", location: {lat: 42.273374, lng: -83.776446}},
       {title: "Carson's American Bistro", location: {lat: 42.304574, lng: -83.695821}},
@@ -72,55 +72,79 @@ class App extends Component {
       {title: "Zamaan Cafe", location: {lat: 42.304313, lng: -83.691194}},
       {title: "Zingerman's Deli", location: {lat: 42.284682, lng: -83.745071}}
     ]
-    })
-    if (this.state.query === "") {
+    })*/
+    /*if (this.state.query === "") {
       this.setState({matches: this.state.restaurants});
       //console.log("Inside App componentDidMount, matches should equal restaurants: " + this.state.restaurants.length + " =? " + this.state.matches.length);
-    }
+    }*/
 
     let get_google = this.getGoogleMaps();
+    let get_restaurants = FSAPI.loadPlaces();
 
-    Promise.all([ get_google ])
+    Promise.all([ get_google, get_restaurants ])
     .then(values => {
       //console.log(values);
       let google = values[0];
       this.google = google;
+      this.infowindow = new google.maps.InfoWindow();
       this.setState(google: google);
       this.map = new google.maps.Map(document.getElementById('map'), {
         center: { lat: 42.280826, lng: -83.743038 },
-        zoom: 13,
+        zoom: 10,
         mapTypeControl: false
       });
       this.setState(map: map);
 
-
+      let restaurants = values[1];
+      let infoBoxes = [];
       //console.log("Now loading restaurant markers");
 
-      //let markerHolder = [];
-      var infowindow = new google.maps.InfoWindow();
-
-      for (var i = 0; i < this.state.restaurants.length; i++) {
-        //console.log("Adding marker for restaurant #: " + i);
-
+      for (var i = 0; i < restaurants.length; i++) {//ADD MARKER AND INFOWINDOW FOR EACH RESTAURANT
+        console.log("Adding marker for restaurant #: " + i);
+        console.log("Restaurant from FourSquareAPI: " + restaurants[i]);
+        var restaurant = restaurants[i];
         // Get the title and location from the restaurant array.
-        var title = this.state.restaurants[i].title;
-        var position = this.state.restaurants[i].location;
+        var name = restaurants[i].name;
+        var position = { lat: restaurants[i].location.lat, lng: restaurants[i].location.lng };
         // Create a marker per location, and put into markers array.
         var marker = new google.maps.Marker({
           position: position,
-          title: title,
+          name: name,
           animation: google.maps.Animation.DROP,
           //icon: defaultIcon,
-          id: i
+          id: restaurants[i].id
         });
+
+        let infoBox = '<div class="info_box">' +
+        '<h4>' + restaurant.name + '</h4>' +
+        '<p>' + FSAPI.aft(restaurant.location.formattedAddress) + '</p>' +
+        '<p>' + restaurant.hereNow.summary + '</p>' +
+        '</div>';
+        marker.addListener('click', () => {
+          if (marker.getAnimation() !== null) { marker.setAnimation(null); }
+				  else { marker.setAnimation(google.maps.Animation.BOUNCE); }
+				  //setTimeout(() => { marker.setAnimation(null) }, 1500);
+			  });
+        google.maps.event.addListener(marker, 'click', () => {
+  			   this.infowindow.setContent(infoBox);
+				   this.map.setZoom(13);
+				   this.map.setCenter(marker.position);
+				   this.infowindow.open(this.map, marker);
+				   this.map.panBy(0, -125);
+			  });
+        //markers.push(marker);
+        infoBoxes.push({ id: restaurant.id, name: restaurant.name, contents: infoBox });
+
         // Push the marker to our array of markers.
         this.state.markers[i] = marker;
 
-        marker.addListener('click', function() {
+        /*marker.addListener('click', function() {
           populateInfoWindow(this, infowindow);
-        });
-      }
-      //this.setState(markers: markers);
+        });*/
+
+
+
+      }//END OF FOR LOOP for adding markers and infoboxes for each restaurant
 
       //console.log("Printing markers before second for loop...");
       //console.log(this.state.markers);
