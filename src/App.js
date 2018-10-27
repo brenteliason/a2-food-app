@@ -231,16 +231,16 @@ class App extends Component {
     }*/
   }
 
-  updateQuery = (query) => {
-    //console.log("Latest query: " + query);
+  /*updateQuery = (query) => {
+    console.log("Latest query: " + query);
     //this.setState({query : query});
     //this.filterRestaurants(query.toLowerCase());
-  }
+  }*/
 
   filterRestaurants(query) {
-    let f = query ? this.state.restaurants.filter(r => r.title.toLowerCase().includes(query.toLowerCase())) : this.state.restaurants;
+    let f = query ? this.state.restaurants.filter(r => r.name.toLowerCase().includes(query.toLowerCase())) : this.state.restaurants;
     this.markers.forEach(m => {
-      m.title.toLowerCase().includes(query.toLowerCase()) ?
+      m.name.toLowerCase().includes(query.toLowerCase()) ?
       m.setVisible(true) :
       m.setVisible(false);
     });
