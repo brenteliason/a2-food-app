@@ -19,6 +19,7 @@ class App extends Component {
     }
     this.filterRestaurants = this.filterRestaurants.bind(this);
     this.clickListItem = this.clickListItem.bind(this);
+    this.enterListItem = this.enterListItem.bind(this);
   }
 
 
@@ -185,6 +186,17 @@ class App extends Component {
       }
   }
 
+  //handles enter key for list items
+  enterListItem(event, restaurant) {
+    //console.log("Inside enterListItem function")
+    let keyCode = event.keyCode || event.which;
+    //console.log(keyCode);
+    if (keyCode == 13) {//if hit enter on list item, trigger same code as if it were clicked
+      //console.log("Inside if statement");
+      this.clickListItem(restaurant);
+    }
+  }
+
   render() {
     //console.log("Calling App render method with " + this.state.restaurants.length + " many restaurants and " + this.state.matches.length + " this many matches");
     return (
@@ -195,7 +207,8 @@ class App extends Component {
           query={this.state.query}
           filtered={this.state.filtered}
           filterRestaurants={this.filterRestaurants}
-          clickListItem={this.clickListItem} />
+          clickListItem={this.clickListItem}
+          enterListItem={this.enterListItem} />
         <Map locations={this.state.restaurants}/>
       </div>
     );
