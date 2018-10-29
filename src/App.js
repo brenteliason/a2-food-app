@@ -98,6 +98,7 @@ class App extends Component {
       this.setState(map: map);
 
       let restaurants = values[1];
+      //this.restaurants = FSAPI.sort_by(restaurants, "name", "asc");
 
       let markers = [];
       let infoBoxes = [];
@@ -111,7 +112,7 @@ class App extends Component {
         //var name = restaurant.name;
         //var position = { lat: restaurant.location.lat, lng: restaurant.location.lng };
         // Create a marker per location, and put into markers array.
-        var marker = new google.maps.Marker({
+        let marker = new google.maps.Marker({
           position: { lat: restaurant.location.lat, lng: restaurant.location.lng },
           id: restaurant.id,
           restaurant: restaurant,
@@ -126,14 +127,16 @@ class App extends Component {
         '</div>';
         marker.addListener('click', () => {
           console.log("Is this where the bug is?");
-          console.log("Is this the marker that was clicked?")
-          //console.log(marker);
+          console.log("Is this the marker that was clicked?");
+          console.log(marker);
           //marker.setAnimation(google.maps.Animation.BOUNCE);
-          if (marker.getAnimation() !== null) { marker.setAnimation(null); }
+          /*if (marker.getAnimation() !== null) { marker.setAnimation(null); }
 				  else { marker.setAnimation(google.maps.Animation.BOUNCE); }
-				  setTimeout(() => { marker.setAnimation(null) }, 1500);
+				  setTimeout(() => { marker.setAnimation(null) }, 1500);*/
 			  });
         google.maps.event.addListener(marker, 'click', () => {
+          console.log("Marker inside click listener for google maps");
+          console.log(marker);
   			   this.infowindow.setContent(infoBox);
 				   //this.map.setZoom(15);
 				   //this.map.setCenter(marker.position);
