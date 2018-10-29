@@ -75,10 +75,6 @@ class App extends Component {
       {title: "Zingerman's Deli", location: {lat: 42.284682, lng: -83.745071}}
     ]
     })*/
-    /*if (this.state.query === "") {
-      this.setState({matches: this.state.restaurants});
-      //console.log("Inside App componentDidMount, matches should equal restaurants: " + this.state.restaurants.length + " =? " + this.state.matches.length);
-    }*/
 
     let get_google = this.getGoogleMaps();
     let get_restaurants = FSAPI.loadPlaces();
@@ -98,8 +94,6 @@ class App extends Component {
       this.setState(map: map);
 
       let restaurants = values[1];
-      //this.restaurants = FSAPI.sort_by(restaurants, "name", "asc");
-
       let markers = [];
       let infoBoxes = [];
       //console.log("Now loading restaurant markers");
@@ -118,7 +112,6 @@ class App extends Component {
           restaurant: restaurant,
           name: restaurant.name,
           animation: google.maps.Animation.DROP,
-          //icon: defaultIcon,
         });
 
         let infoBox = '<div class="info_box">' +
@@ -129,19 +122,19 @@ class App extends Component {
           console.log("Is this where the bug is?");
           console.log("Is this the marker that was clicked?");
           console.log(marker);
-          //marker.setAnimation(google.maps.Animation.BOUNCE);
-          /*if (marker.getAnimation() !== null) { marker.setAnimation(null); }
+          marker.setAnimation(google.maps.Animation.BOUNCE);
+          if (marker.getAnimation() !== null) { marker.setAnimation(null); }
 				  else { marker.setAnimation(google.maps.Animation.BOUNCE); }
-				  setTimeout(() => { marker.setAnimation(null) }, 1500);*/
+				  setTimeout(() => { marker.setAnimation(null) }, 1500);
 			  });
         google.maps.event.addListener(marker, 'click', () => {
           console.log("Marker inside click listener for google maps");
           console.log(marker);
   			   this.infowindow.setContent(infoBox);
-				   //this.map.setZoom(15);
-				   //this.map.setCenter(marker.position);
+				   this.map.setZoom(15);
+				   this.map.setCenter(marker.position);
 				   this.infowindow.open(this.map, marker);
-				   //this.map.panBy(0, -125);
+				   this.map.panBy(0, -125);
 			  });
 
         markers.push(marker);
@@ -152,128 +145,15 @@ class App extends Component {
 
       }//END OF FOR LOOP for adding markers and infoboxes for each restaurant
 
-
-      /*for (let j = 0; j < restaurants.length; j++) {
-        let infoBox = '<div class="info_box">' +
-        '<h4>' + restaurant.name + '</h4>' +
-        '<p>' + FSAPI.aft(restaurant.location.formattedAddress) + '</p>' +
-        '</div>';
-
-        markers[j].addListener('click', () => {
-          console.log("Is this where the bug is?");
-          console.log("Is this the marker that was clicked?")
-          console.log(markers[j]);
-          //marker.setAnimation(google.maps.Animation.BOUNCE);
-          if (markers[j].getAnimation() !== null) { markers[j].setAnimation(null); }
-          else { markers[j].setAnimation(google.maps.Animation.BOUNCE); }
-          setTimeout(() => { markers[j].setAnimation(null) }, 1500);
-        });
-        google.maps.event.addListener(markers[j], 'click', () => {
-           this.infowindow.setContent(infoBoxes[j]);
-           //this.map.setZoom(15);
-           //this.map.setCenter(marker.position);
-           this.infowindow.open(this.map, markers[j]);
-           //this.map.panBy(0, -125);
-        });
-
-        infoBoxes.push({ id: restaurant.id, name: restaurant.name, contents: infoBox });
-      }*/
-
       this.restaurants = FSAPI.sort_by(restaurants, "name", "asc");
       this.setState({restaurants: this.restaurants});
       this.markers = FSAPI.sort_by(markers, "name", "asc");
       this.setState({markers: this.markers});
       this.infoBoxes = FSAPI.sort_by(infoBoxes, "name", "asc");
       this.setState({infoBoxes: this.infoBoxes});
-
-
-
-
-      //console.log("Printing markers before second for loop...");
-      //console.log(this.state.markers);
-
-      //var bounds = new google.maps.LatLngBounds();
-      // Extend the boundaries of the map for each marker and display the marker
-      /*for (var j = 0; j < this.state.markers.length; j++) {
-        //this.state.markers[j].setMap(this.map);
-        //bounds.extend(this.state.markers[i].position);
-
-        /*marker.addListener('click', function() {
-          // Check to make sure the infowindow is not already opened on this marker.
-          if (infowindow.marker != marker) {
-            // Clear the infowindow content to give the streetview time to load.
-            infowindow.setContent('');
-            infowindow.marker = marker;
-            // Make sure the marker property is cleared if the infowindow is closed.
-            infowindow.addListener('closeclick', function() {
-              infowindow.marker = null;
-            });
-            var streetViewService = new google.maps.StreetViewService();
-            var radius = 50;
-            // In case the status is OK, which means the pano was found, compute the
-            // position of the streetview image, then calculate the heading, then get a
-            // panorama from that and set the options
-            function getStreetView(data, status) {
-              if (status == google.maps.StreetViewStatus.OK) {
-                var nearStreetViewLocation = data.location.latLng;
-                var heading = google.maps.geometry.spherical.computeHeading(
-                  nearStreetViewLocation, marker.position);
-                  infowindow.setContent('<div>' + marker.title + '</div><div id="pano"></div>');
-                  var panoramaOptions = {
-                    position: nearStreetViewLocation,
-                    pov: {
-                      heading: heading,
-                      pitch: 30
-                    }
-                  };
-                var panorama = new google.maps.StreetViewPanorama(
-                  document.getElementById('pano'), panoramaOptions);
-              } else {
-                infowindow.setContent('<div>' + marker.title + '</div>' +
-                  '<div>No Street View Found</div>');
-              }
-            }
-            // Use streetview service to get the closest streetview image within
-            // 50 meters of the markers position
-            streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
-            // Open the infowindow on the correct marker.
-            infowindow.open(this.map, marker);
-          }//END OF IF STATEMENT AT TOP*/
-        //}*///END of For loop
-
-        //document.getElementById('show-restaurants').addEventListener('click', this.showRestaurants);
-
-        //document.getElementById('hide-restaurants').addEventListener('click', this.hideRestaurants);
-
     })//END OF PROMISE
 
   } //END of componentdidmount
-
-  showRestaurants() {
-    //console.log("Show Restaurants button clicked");
-    //let google = this.getGoogleMaps();
-    /*var bounds = new google.maps.LatLngBounds();
-    // Extend the boundaries of the map for each marker and display the marker
-    for (var i = 0; i < this.state.markers.length; i++) {
-      this.state.markers[i].setMap(this.state.map);
-      bounds.extend(this.state.markers[i].position);
-    }
-    this.state.map.fitBounds(bounds);*/
-  }
-
-  // This function will loop through the restaurants and hide them all.
-  hideRestaurants() {
-    //console.log("Hide restaurants button clicked");
-    /*for (var i = 0; i < this.state.markers.length; i++) {
-      this.state.markers[i].setMap(null);
-    }*/
-  }
-
-  /*updateQuery = (query) => {
-    console.log("Latest query: " + query);
-    //this.setState({query : query});
-    //this.filterRestaurants(query.toLowerCase());
-  }*/
 
   filterRestaurants(query) {
     let f = query ? this.state.restaurants.filter(r => r.name.toLowerCase().includes(query.toLowerCase())) : this.state.restaurants;
@@ -311,40 +191,6 @@ class App extends Component {
       }
   }
 
-  searchRestaurants(query) {
-    //console.log("Submit search function called, need to search for restaurants in list");
-    //console.log("Number of restaurants is: " + this.state.restaurants.length);
-    this.setState({matches: []});
-    //console.log("After resetting matches, length is: " + this.state.matches.length);
-    if (query !== "") {
-      let matchCount = 0;
-      //let queryMatches = [];
-      for (let i = 0; i < this.state.restaurants.length; i++) {
-        //console.log("Check if restaurant " + i + " matches query " + query);
-        if (this.state.restaurants[i].title.toLowerCase().includes(query)) {
-          //console.log("MATCH! " + query + " found in " + this.state.restaurants[i].title);
-          let matchTitle = this.state.restaurants[i].title;
-          let matchPosition = this.state.restaurants[i].location;
-          this.setState({matches: [...this.state.matches, this.state.restaurants[i]]});
-          //queryMatches.push({matchTitle, matchPosition});
-          matchCount++;
-        }
-      }
-      //console.log("Matchcount equals " + matchCount);
-      //console.log("queryMatches length equals " + queryMatches.length);
-      //this.setState({matches: queryMatches});
-      //console.log("State.matches length equals " + this.state.matches.length);
-      //console.log(this.state.matches);
-    }
-    else {
-      //console.log("No query at this time - all restaurants match");
-      //console.log("\tLength of matches should be 0, it is: " + this.state.matches.length);
-      //this.setState({matches: this.state.restaurants});
-      //console.log("RESTAURANTS []" + this.state.restaurants);
-      //console.log("MATCHES []" + this.state.matches);
-    }
-  }
-
   render() {
     //console.log("Calling App render method with " + this.state.restaurants.length + " many restaurants and " + this.state.matches.length + " this many matches");
     return (
@@ -363,50 +209,3 @@ class App extends Component {
 }
 
 export default App;
-
-// This function populates the infowindow when the marker is clicked. We'll only allow
-// one infowindow which will open at the marker that is clicked, and populate based
-// on that markers position.
-/*function populateInfoWindow(marker, infowindow) {
-  //console.log("Need to populate infowindow for marker: " + marker.title);
-  // Check to make sure the infowindow is not already opened on this marker.
-  if (infowindow.marker != marker) {
-    // Clear the infowindow content to give the streetview time to load.
-    infowindow.setContent('');
-    infowindow.marker = marker;
-    // Make sure the marker property is cleared if the infowindow is closed.
-    infowindow.addListener('closeclick', function() {
-      infowindow.marker = null;
-    });
-    var streetViewService = new google.maps.StreetViewService();
-    var radius = 50;
-    // In case the status is OK, which means the pano was found, compute the
-    // position of the streetview image, then calculate the heading, then get a
-    // panorama from that and set the options
-    function getStreetView(data, status) {
-      if (status == google.maps.StreetViewStatus.OK) {
-        var nearStreetViewLocation = data.location.latLng;
-        var heading = google.maps.geometry.spherical.computeHeading(
-          nearStreetViewLocation, marker.position);
-          infowindow.setContent('<div>' + marker.title + '</div><div id="pano"></div>');
-          var panoramaOptions = {
-            position: nearStreetViewLocation,
-            pov: {
-              heading: heading,
-              pitch: 30
-            }
-          };
-        var panorama = new google.maps.StreetViewPanorama(
-          document.getElementById('pano'), panoramaOptions);
-      } else {
-        infowindow.setContent('<div>' + marker.title + '</div>' +
-          '<div>No Street View Found</div>');
-      }
-    }
-    // Use streetview service to get the closest streetview image within
-    // 50 meters of the markers position
-    streetViewService.getPanoramaByLocation(marker.position, radius, getStreetView);
-    // Open the infowindow on the correct marker.
-    infowindow.open(map, marker);
-  }
-}*/ //END OF populate info window method

@@ -9,7 +9,6 @@ class Map extends Component {
   render() {
     return (
        <div id='map'>
-        <span>Map placeholder</span>
        </div>
     )
   }
