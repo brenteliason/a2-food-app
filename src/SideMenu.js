@@ -41,9 +41,9 @@ class SideMenu extends Component {
         //console.log("active query");
         return (
            <div className="options-box">
-             <h1>Find A Restaurant in A2</h1>
+             <h1>Find Food in A2</h1>
              <div>
-               <input id="restaurant-search" type="text" placeholder="Search for a restaurant" value={this.props.query}
+               <input id="restaurant-search" type="text" placeholder="Search for food" value={this.props.query}
                 onChange={(event) => this.props.filterRestaurants(event.target.value)}/>
                <input id="go-places" type="button" value="Go"/>
              </div>

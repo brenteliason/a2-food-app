@@ -21,11 +21,6 @@ h1 {
   margin: 0 0 10px 0;
 }
 
-#hide-restaurants,
-#show-restaurants {
-  width: 48%;
-}
-
 hr {
   background: #D0D7D9;
   height: 1px;
@@ -59,30 +54,32 @@ ul {
   list-style: none;
 }
 
-#pano {
-  width: 200px;
-  height: 200px;
-}
-
-#places-search,
-#search-within-time-text {
-  width: 84%;
-}
-
 .text {
   font-size: 12px;
 }
 
-#toggle-drawing {
-  width: 27%;
-  position: relative;
-  margin-left: 10px;
+
+@media screen and (max-width: 600px) {/*map disappears*/
+  .options-box {
+    position: relative;
+    float: left;
+    display: flex;
+    flex-wrap: wrap;
+    width: auto;
+  }
+  #map, #map-container {
+    width: 0%;
+
+  }
 }
 
-#zoom-to-area-text {
-  width: 70%;
-}
-
-#zoom-to-area {
-  width: 24%;
+@media screen and (min-width: 601px) {/*map appears*/
+  .options-box {
+    position: relative;
+    float: left;
+  }
+  #map, #map-container {
+    width: 100%;
+    position: absolute;
+  }
 }
