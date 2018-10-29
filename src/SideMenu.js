@@ -52,7 +52,7 @@ class SideMenu extends Component {
               <ul>
                {
                  this.props.filtered && this.props.filtered.map((restaurant, key) => (
-                    <Restaurant restaurant={restaurant} key={key} clickListItem={this.props.clickListItem} />
+                    <Restaurant restaurant={restaurant} key={key} specialkey={key} clickListItem={this.props.clickListItem} />
                  ))
                }
               </ul>

@@ -138,7 +138,7 @@ export function loadPlaces() {
     getVenues()
     .then(venues => {
       if(venues.length > 0) {
-        console.log('returning venues from idb');
+        //console.log('returning venues from idb');
         return resolve(venues) ;
       }
       console.log('fetching restaurants...');

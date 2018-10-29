@@ -129,8 +129,8 @@ class App extends Component {
 				  setTimeout(() => { marker.setAnimation(null) }, 1500);
 			  });
         google.maps.event.addListener(marker, 'click', () => {
-          console.log("Marker inside click listener for google maps");
-          console.log(marker);
+          //console.log("Marker inside click listener for google maps");
+          //console.log(marker);
            this.map.setCenter(marker.position);
            this.map.setZoom(15);
            this.infowindow.setContent(infoBox);
