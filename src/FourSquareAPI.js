@@ -22,6 +22,7 @@ export function getAJAXfetches(key) {
   })
 }
 
+//returns the locations fetched in a usable form
 export function getVenues() {
   return dbPromise.then(db => {
     return db.transaction('venues').objectStore('venues').getAll();
@@ -49,6 +50,7 @@ export function storeAJAXfetch(key, value) {
   });
 }
 
+//lets you store locations fetched from API into array
 export function storeVenues(venues) {
   if(!venues || !Array.isArray(venues)) {
     console.log(venues);
@@ -76,8 +78,7 @@ export function storeVenues(venues) {
   });
 }
 
-/* --- */
-
+//sorts arrays into alphabetical order for organization purposes, like having side list alphabetized
 export function sort_by(array, property, direction) {
   let tempArray = array;
   tempArray.sort(function(a, b){
@@ -116,8 +117,7 @@ export function aft(l) {
   return s;
 }
 
-/* --- */
-
+//allows you to use Google Maps API within React framework
 export function getGoogleMaps() {
   return new Promise((resolve) => {
     window.resolveGoogleMapsPromise = () => {
@@ -132,6 +132,7 @@ export function getGoogleMaps() {
   });
 }
 
+//FIRST function called from App that interacts with FourSquareAPI to load locations, apiURL has built in options to search for 15 locations with the keyword "food" near Ann Arbor
 export function loadPlaces() {
   return new Promise(function(resolve, reject){
     getVenues()

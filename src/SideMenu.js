@@ -6,16 +6,10 @@ class SideMenu extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      restaurants: this.props.locations,
-      query: ""
+      restaurants: this.props.locations
+      //query: ""
     }
     //console.log("Constructor completed, this many restaurants should be in array " + this.props.locations.length);
-  }
-
-  componentDidMount() {
-    //console.log("Side menu did mount");
-    //console.log(this.props.locations);
-    //this.setState({restaurants: this.props.locations});
   }
 
   render() {

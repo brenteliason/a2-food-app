@@ -21,6 +21,8 @@ class App extends Component {
     this.clickListItem = this.clickListItem.bind(this);
   }
 
+
+  //Adapted from Udacity's Ryan Waite's tutorial on project 7
   getGoogleMaps() {
     if (!this.googleMapsPromise) {
       this.googleMapsPromise = new Promise((resolve) => {
@@ -44,6 +46,7 @@ class App extends Component {
 
   componentDidMount() {
     //console.log("App component has mounted");
+    //HARD CODED LIST OF Ann Arbor restaurants from previous version, may want to come back and do restaurant version without FourSquare API
     /*this.setState({ restaurants: [
       {title: "Ayse's Turkish Cafe", location: {lat: 42.299009, lng: -83.721571}},
       {title: "Bell's Diner", location: {lat: 42.273374, lng: -83.776446}},
@@ -76,8 +79,8 @@ class App extends Component {
     ]
     })*/
 
-    let get_google = this.getGoogleMaps();
-    let get_restaurants = FSAPI.loadPlaces();
+    let get_google = this.getGoogleMaps();//get reference to google maps API
+    let get_restaurants = FSAPI.loadPlaces();//get list of locations from FourSquareAPI
 
     Promise.all([ get_google, get_restaurants ])
     .then(values => {
@@ -93,18 +96,15 @@ class App extends Component {
       });
       this.setState(map: map);
 
-      let restaurants = values[1];
-      let markers = [];
-      let infoBoxes = [];
-      //console.log("Now loading restaurant markers");
+      let restaurants = values[1];//get list of locations from promise
+      let markers = [];//will store markers corresponding to each location
+      let infoBoxes = [];//will store infoboxes attached to each marker for each location
 
-      for (var i = 0; i < restaurants.length; i++) {//ADD MARKER AND INFOWINDOW FOR EACH RESTAURANT
+      //loops through restaurants creating a corresponding marker and infobox for each one and adding it to the map
+      for (var i = 0; i < restaurants.length; i++) {
         //console.log("Adding marker for restaurant #: " + i);
         //console.log("Restaurant from FourSquareAPI with id#: " + restaurants[i].id);
         var restaurant = restaurants[i];
-        // Get the title and location from the restaurant array.
-        //var name = restaurant.name;
-        //var position = { lat: restaurant.location.lat, lng: restaurant.location.lng };
         // Create a marker per location, and put into markers array.
         let marker = new google.maps.Marker({
           position: { lat: restaurant.location.lat, lng: restaurant.location.lng },
@@ -114,14 +114,15 @@ class App extends Component {
           animation: google.maps.Animation.DROP,
         });
 
+        //create info box for each location
         let infoBox = '<div class="info_box">' +
         '<h4>' + restaurant.name + '</h4>' +
         '<p>' + FSAPI.aft(restaurant.location.formattedAddress) + '</p>' +
         '</div>';
         marker.addListener('click', () => {
-          console.log("Is this where the bug is?");
-          console.log("Is this the marker that was clicked?");
-          console.log(marker);
+          //console.log("Is this where the bug is?");
+          //console.log("Is this the marker that was clicked?");
+          //console.log(marker);
           marker.setAnimation(google.maps.Animation.BOUNCE);
           if (marker.getAnimation() !== null) { marker.setAnimation(null); }
 				  else { marker.setAnimation(google.maps.Animation.BOUNCE); }
@@ -130,21 +131,21 @@ class App extends Component {
         google.maps.event.addListener(marker, 'click', () => {
           console.log("Marker inside click listener for google maps");
           console.log(marker);
-  			   this.infowindow.setContent(infoBox);
-				   this.map.setZoom(15);
-				   this.map.setCenter(marker.position);
+           this.map.setCenter(marker.position);
+           this.map.setZoom(15);
+           this.infowindow.setContent(infoBox);
 				   this.infowindow.open(this.map, marker);
-				   this.map.panBy(0, -125);
 			  });
 
+        //add marker and infobox to arrays for later reference
         markers.push(marker);
-        marker.setMap(this.map);
-
         infoBoxes.push({ id: restaurant.id, name: restaurant.name, contents: infoBox });
 
-
+        //add marker to map, no need to add infobox because those should only display when marker or sidemenu option is clicked
+        marker.setMap(this.map);
       }//END OF FOR LOOP for adding markers and infoboxes for each restaurant
 
+      //Alphabetize all restaurants, markers, and infoboxes for organization so sidemenu is alphabetized and indices are the same across arrays
       this.restaurants = FSAPI.sort_by(restaurants, "name", "asc");
       this.setState({restaurants: this.restaurants});
       this.markers = FSAPI.sort_by(markers, "name", "asc");
@@ -155,6 +156,7 @@ class App extends Component {
 
   } //END of componentdidmount
 
+  //search for restaurants in list for limited display in side menu and then map
   filterRestaurants(query) {
     let f = query ? this.state.restaurants.filter(r => r.name.toLowerCase().includes(query.toLowerCase())) : this.state.restaurants;
     this.markers.forEach(m => {
@@ -165,16 +167,8 @@ class App extends Component {
     this.setState({ filtered: f, query: query });
   }
 
+  //when an option is clicked on the side menu, this code triggers the corresponding marker on the map to bounce and display the infobox
   clickListItem(restaurant) {
-      //console.log("Clicked on restaurant:");
-      //console.log("Restaurant id equals: " + restaurant.id);
-
-      //console.log("State restaurants are: ");
-      //console.log(this.state.restaurants[0].id);
-      //console.log("state markers length equals: " + this.state.markers.length);
-      //console.log(this.state.markers);
-
-      //console.log("First marker id equals: " + this.state.markers[0].id);
       let marker = this.state.markers.filter(m => m.id === restaurant.id)[0];
       let info_obj = this.infoBoxes.filter(i => i.id === restaurant.id)[0];
       let infoBox = info_obj && info_obj.contents || "nothing...";
