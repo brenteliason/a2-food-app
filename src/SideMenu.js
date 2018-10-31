@@ -17,7 +17,7 @@ class SideMenu extends Component {
       if (this.props.query === "") {
         //console.log("No query");
         return (
-           <div className="options-box">
+           <div className="options-box" aria-label="menu">
              <h1>Find Food in A2</h1>
              <div>
                <input id="restaurant-search" type="text" placeholder="Search for a restaurant" value={this.props.query}
@@ -25,7 +25,7 @@ class SideMenu extends Component {
                <input id="go-places" type="button" value="Go"/>
              </div>
              <hr/>
-             <div id="restaurant-list">
+             <div id="restaurant-list" aria-label="list of restaurants">
               <ul>
                 {
                   this.props.locations && this.props.locations.map((restaurant, key) => (
@@ -40,7 +40,7 @@ class SideMenu extends Component {
       else {
         //console.log("active query");
         return (
-           <div className="options-box">
+           <div className="options-box" aria-label="menu">
              <h1>Find Food in A2</h1>
              <div>
                <input id="restaurant-search" type="text" placeholder="Search for food" value={this.props.query}
@@ -48,7 +48,7 @@ class SideMenu extends Component {
                <input id="go-places" type="button" value="Go"/>
              </div>
              <hr/>
-             <div id="restaurant-list">
+             <div id="restaurant-list" aria-label="list of restaurants">
               <ul>
                {
                  this.props.filtered && this.props.filtered.map((restaurant, key) => (

@@ -117,7 +117,13 @@ export function aft(l) {
   return s;
 }
 
-//allows you to use Google Maps API within React framework
+
+//**************************************************************************************************************
+//**************************************************************************************************************
+//**************************************************************************************************************
+//DELETE FUNCTION IF MAP STILL WORKS!!!!!!!!
+//**************************************************************************************************************
+/*//allows you to use Google Maps API within React framework
 export function getGoogleMaps() {
   return new Promise((resolve) => {
     window.resolveGoogleMapsPromise = () => {
@@ -130,7 +136,7 @@ export function getGoogleMaps() {
     script.async = true;
     document.body.appendChild(script);
   });
-}
+}*/
 
 //FIRST function called from App that interacts with FourSquareAPI to load locations, apiURL has built in options to search for 15 locations with the keyword "food" near Ann Arbor
 export function loadPlaces() {
@@ -155,10 +161,12 @@ export function loadPlaces() {
         })
       })
       .catch(error => {
+        console.log("Four Square API connection failed");
         reject(error);
       })
     })
     .catch(error => {
+      console.log("Four Square API connection failed");
       reject(error);
     })
   });

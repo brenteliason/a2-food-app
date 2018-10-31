@@ -8,7 +8,8 @@ body {
 
 .container {
   height: 100%;
-
+  display: flex;
+  flex-wrap: wrap;
 }
 
 input {
@@ -58,8 +59,16 @@ ul {
   font-size: 12px;
 }
 
+/*@media screen and (max-width: 600px) {/*side menu disappears*/
+/*  .options-box {
+    position: absolute;
+    left: -350em;
+    width: 0px;
+  }
+}*/
 
-@media screen and (max-width: 600px) {/*map disappears*/
+
+/*@media screen and (max-width: 600px) {//map disappears
   .options-box {
     position: relative;
     float: left;
@@ -71,9 +80,9 @@ ul {
     width: 0%;
 
   }
-}
+}*/
 
-@media screen and (min-width: 601px) {/*map appears*/
+/*@media screen and (min-width: 601px) {//map appears
   .options-box {
     position: relative;
     float: left;
@@ -82,4 +91,4 @@ ul {
     width: 100%;
     position: absolute;
   }
-}
+}*/

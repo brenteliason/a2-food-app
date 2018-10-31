@@ -9,7 +9,7 @@ class Restaurant extends Component {
 
   render() {
     return (
-       <li tabIndex="0" key={this.props.specialkey} id={this.props.restaurant.id}
+       <li tabIndex="0" key={this.props.specialkey} id={this.props.restaurant.id} aria-label="food option" role="link"
        onClick={() => { this.props.clickListItem(this.props.restaurant) }}
        onKeyPress={(event) => { this.props.enterListItem(event,this.props.restaurant) }}>{this.props.restaurant.name}</li>
     )
