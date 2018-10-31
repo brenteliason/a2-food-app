@@ -29,16 +29,6 @@ hr {
   border: none;
 }
 
-#map, #map-container {
-  bottom:0px;
-  height: 100%;
-  max-height: 100%;
-  max-width: 100%;
-  left: 362px;
-  position: absolute;
-  right: 0px;
-}
-
 .options-box {
   background: #fff;
   border: 1px solid #999;
@@ -47,7 +37,7 @@ hr {
   line-height: 35px;
   padding: 10px 10px 30px 10px;
   text-align: left;
-  width: 340px;
+  width: 200px;
   max-width: 100%;
 }
 
@@ -59,36 +49,20 @@ ul {
   font-size: 12px;
 }
 
-/*@media screen and (max-width: 600px) {/*side menu disappears*/
-/*  .options-box {
-    position: absolute;
-    left: -350em;
-    width: 0px;
-  }
-}*/
+#map {
+  height: 100%;
+  max-width: 100%;
+  position: absolute;
+  left: 215px;
+  right: 0px;
+}
 
-
-/*@media screen and (max-width: 600px) {//map disappears
+/*Side Menu stops expanding and remains fixed width*/
+@media screen and (min-width: 601px) {
   .options-box {
-    position: relative;
-    float: left;
-    display: flex;
-    flex-wrap: wrap;
-    width: auto;
+    width: 340px;
   }
-  #map, #map-container {
-    width: 0%;
-
+  #map {
+    left: 362px;
   }
-}*/
-
-/*@media screen and (min-width: 601px) {//map appears
-  .options-box {
-    position: relative;
-    float: left;
-  }
-  #map, #map-container {
-    width: 100%;
-    position: absolute;
-  }
-}*/
+}

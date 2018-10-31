@@ -216,3 +216,8 @@ class App extends Component {
 }
 
 export default App;
+
+//global function called by Google Maps API if key is invalid
+function gm_authFailure() {
+  console.log("Google Maps API Key failed");
+};
