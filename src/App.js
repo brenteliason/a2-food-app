@@ -15,11 +15,13 @@ class App extends Component {
       infoBoxes: [],
       map: null,
       google: null,
-      query: ""
+      query: "",
+      errorStatus: false
     }
     this.filterRestaurants = this.filterRestaurants.bind(this);
     this.clickListItem = this.clickListItem.bind(this);
     this.enterListItem = this.enterListItem.bind(this);
+
   }
 
 
@@ -154,6 +156,10 @@ class App extends Component {
       this.infoBoxes = FSAPI.sort_by(infoBoxes, "name", "asc");
       this.setState({infoBoxes: this.infoBoxes});
     })//END OF PROMISE
+    .catch(error => {
+      console.log("Error: " + error);
+      this.setState({errorStatus: true});
+    })
 
   } //END of componentdidmount
 
@@ -191,7 +197,7 @@ class App extends Component {
     //console.log("Inside enterListItem function")
     let keyCode = event.keyCode || event.which;
     //console.log(keyCode);
-    if (keyCode == 13) {//if hit enter on list item, trigger same code as if it were clicked
+    if (keyCode === 13) {//if hit enter on list item, trigger same code as if it were clicked
       //console.log("Inside if statement");
       this.clickListItem(restaurant);
     }
@@ -199,19 +205,29 @@ class App extends Component {
 
   render() {
     //console.log("Calling App render method with " + this.state.restaurants.length + " many restaurants and " + this.state.matches.length + " this many matches");
-    return (
-      <div className="container">
-        <SideMenu
-          locations={this.state.restaurants}
-          matches={this.state.matches}
-          query={this.state.query}
-          filtered={this.state.filtered}
-          filterRestaurants={this.filterRestaurants}
-          clickListItem={this.clickListItem}
-          enterListItem={this.enterListItem} />
-        <Map locations={this.state.restaurants}/>
-      </div>
-    );
+    if (this.state.errorStatus === true) {
+      console.log("There's been an error");
+      return (
+        <main className="container">
+          <span>There was an error loading the page. Please try again.</span>
+          </main>
+      )
+    }
+    else {
+      return (
+        <main className="container">
+          <SideMenu
+            locations={this.state.restaurants}
+            matches={this.state.matches}
+            query={this.state.query}
+            filtered={this.state.filtered}
+            filterRestaurants={this.filterRestaurants}
+            clickListItem={this.clickListItem}
+            enterListItem={this.enterListItem} />
+          <Map locations={this.state.restaurants}/>
+        </main>
+      );
+    }
   }
 }
 
@@ -221,3 +237,29 @@ export default App;
 function gm_authFailure() {
   console.log("Google Maps API Key failed");
 };
+
+
+//Copied from Mozilla MDN's explanation of onError method
+window.onerror = function (msg, url, lineNo, columnNo, error) {
+    var string = msg.toLowerCase();
+    var substring = "script error";
+    if (string.indexOf(substring) > -1){
+        alert('Script Error: See Browser Console for Detail');
+    } else {
+        var message = [
+            'Message: ' + msg,
+            'URL: ' + url,
+            'Line: ' + lineNo,
+            'Column: ' + columnNo,
+            'Error object: ' + JSON.stringify(error)
+        ].join(' - ');
+
+        alert(message);
+    }
+
+    return false;
+};
+
+window.addEventListener('error', function(event) {
+  console.log("There has been an error");
+});
