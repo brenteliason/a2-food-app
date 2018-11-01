@@ -235,11 +235,24 @@ export default App;
 
 //global function called by Google Maps API if key is invalid
 function gm_authFailure() {
-  console.log("Google Maps API Key failed");
+  let errorMessage = "Google Maps API key failed";
+  console.log(errorMessage);
+  userAlert(errorMessage);
 };
 
+function userAlert(message) {
+  const errorSpan = document.createElement("span");
+  errorSpan.setAttribute("role", "alert");
+  errorSpan.innerHTML = message;
+  document.getElementById("container").appendChild(errorSpan);
+}
 
-//Copied from Mozilla MDN's explanation of onError method
+//Copied from Mozilla MDN's explanation of onError method: https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers/onerror
+window.addEventListener('error', function(event) {
+  console.log("There has been an error");
+});
+
+//Copied from Mozilla MDN's explanation of onError method: https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers/onerror
 window.onerror = function (msg, url, lineNo, columnNo, error) {
     var string = msg.toLowerCase();
     var substring = "script error";
@@ -259,7 +272,3 @@ window.onerror = function (msg, url, lineNo, columnNo, error) {
 
     return false;
 };
-
-window.addEventListener('error', function(event) {
-  console.log("There has been an error");
-});
