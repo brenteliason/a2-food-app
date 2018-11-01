@@ -141,11 +141,13 @@ export function loadPlaces() {
       })
       .catch(error => {
         console.log("Four Square API connection failed");
+        alert("Four Square API connection failed");
         reject(error);
       })
     })
     .catch(error => {
       console.log("Four Square API connection failed");
+      alert("Four Square API connection failed");
       reject(error);
     })
   });

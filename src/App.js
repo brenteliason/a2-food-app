@@ -237,6 +237,7 @@ export default App;
 function gm_authFailure() {
   let errorMessage = "Google Maps API key failed";
   console.log(errorMessage);
+  alert(errorMessage);
   userAlert(errorMessage);
 };
 
@@ -250,6 +251,7 @@ function userAlert(message) {
 //Copied from Mozilla MDN's explanation of onError method: https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers/onerror
 window.addEventListener('error', function(event) {
   console.log("There has been an error");
+  alert("There has been an error, see console for details");
 });
 
 //Copied from Mozilla MDN's explanation of onError method: https://developer.mozilla.org/en-US/docs/Web/API/GlobalEventHandlers/onerror
